@@ -3,8 +3,12 @@
   "WorkspaceRootPath": "C:\\Users\\chuon\\reactjs\\caro-game\\GameServer\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{E996A454-A16E-4005-9854-0A8D97FCC4C3}|GameServer\\GameServer.csproj|c:\\users\\chuon\\reactjs\\caro-game\\gameserver\\gameserver\\gamehub2.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{E996A454-A16E-4005-9854-0A8D97FCC4C3}|GameServer\\GameServer.csproj|solutionrelative:gameserver\\gamehub2.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{E996A454-A16E-4005-9854-0A8D97FCC4C3}|GameServer\\GameServer.csproj|c:\\users\\chuon\\reactjs\\caro-game\\gameserver\\gameserver\\gamehub.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E996A454-A16E-4005-9854-0A8D97FCC4C3}|GameServer\\GameServer.csproj|solutionrelative:gameserver\\gamehub.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E996A454-A16E-4005-9854-0A8D97FCC4C3}|GameServer\\GameServer.csproj|c:\\users\\chuon\\reactjs\\caro-game\\gameserver\\gameserver\\gamedto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E996A454-A16E-4005-9854-0A8D97FCC4C3}|GameServer\\GameServer.csproj|solutionrelative:gameserver\\gamedto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{E996A454-A16E-4005-9854-0A8D97FCC4C3}|GameServer\\GameServer.csproj|c:\\users\\chuon\\reactjs\\caro-game\\gameserver\\gameserver\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -17,10 +21,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{E996A454-A16E-4005-9854-0A8D97FCC4C3}|GameServer\\GameServer.csproj|c:\\users\\chuon\\reactjs\\caro-game\\gameserver\\gameserver\\weatherforecast.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{E996A454-A16E-4005-9854-0A8D97FCC4C3}|GameServer\\GameServer.csproj|solutionrelative:gameserver\\weatherforecast.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{E996A454-A16E-4005-9854-0A8D97FCC4C3}|GameServer\\GameServer.csproj|c:\\users\\chuon\\reactjs\\caro-game\\gameserver\\gameserver\\gamestate.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{E996A454-A16E-4005-9854-0A8D97FCC4C3}|GameServer\\GameServer.csproj|solutionrelative:gameserver\\gamestate.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{E996A454-A16E-4005-9854-0A8D97FCC4C3}|GameServer\\GameServer.csproj|c:\\users\\chuon\\reactjs\\caro-game\\gameserver\\gameserver\\properties\\launchsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
@@ -78,7 +78,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 4,
               "Title": "WeatherForecast.cs",
               "DocumentMoniker": "C:\\Users\\chuon\\reactjs\\caro-game\\GameServer\\GameServer\\WeatherForecast.cs",
               "RelativeDocumentMoniker": "GameServer\\WeatherForecast.cs",
@@ -92,25 +92,25 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "GameHub2.cs",
-              "DocumentMoniker": "C:\\Users\\chuon\\reactjs\\caro-game\\GameServer\\GameServer\\GameHub2.cs",
-              "RelativeDocumentMoniker": "GameServer\\GameHub2.cs",
-              "ToolTip": "C:\\Users\\chuon\\reactjs\\caro-game\\GameServer\\GameServer\\GameHub2.cs",
-              "RelativeToolTip": "GameServer\\GameHub2.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAAEAAAAAAAAAA==",
+              "Title": "GameHub.cs",
+              "DocumentMoniker": "C:\\Users\\chuon\\reactjs\\caro-game\\GameServer\\GameServer\\GameHub.cs",
+              "RelativeDocumentMoniker": "GameServer\\GameHub.cs",
+              "ToolTip": "C:\\Users\\chuon\\reactjs\\caro-game\\GameServer\\GameServer\\GameHub.cs",
+              "RelativeToolTip": "GameServer\\GameHub.cs",
+              "ViewState": "AgIAAIcAAAAAAAAAAAAowAcAAAAqAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-11-15T06:23:44.738Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "GameState.cs",
-              "DocumentMoniker": "C:\\Users\\chuon\\reactjs\\caro-game\\GameServer\\GameServer\\GameState.cs",
-              "RelativeDocumentMoniker": "GameServer\\GameState.cs",
-              "ToolTip": "C:\\Users\\chuon\\reactjs\\caro-game\\GameServer\\GameServer\\GameState.cs",
-              "RelativeToolTip": "GameServer\\GameState.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAA==",
+              "DocumentIndex": 1,
+              "Title": "GameDTO.cs",
+              "DocumentMoniker": "C:\\Users\\chuon\\reactjs\\caro-game\\GameServer\\GameServer\\GameDTO.cs",
+              "RelativeDocumentMoniker": "GameServer\\GameDTO.cs",
+              "ToolTip": "C:\\Users\\chuon\\reactjs\\caro-game\\GameServer\\GameServer\\GameDTO.cs",
+              "RelativeToolTip": "GameServer\\GameDTO.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAuwAEAAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-11-15T06:15:52.683Z",
               "EditorCaption": ""
@@ -143,20 +143,20 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 2,
               "Title": "Program.cs",
               "DocumentMoniker": "C:\\Users\\chuon\\reactjs\\caro-game\\GameServer\\GameServer\\Program.cs",
               "RelativeDocumentMoniker": "GameServer\\Program.cs",
               "ToolTip": "C:\\Users\\chuon\\reactjs\\caro-game\\GameServer\\GameServer\\Program.cs",
               "RelativeToolTip": "GameServer\\Program.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAB4AAAATAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAB4AAAASAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-11-14T17:47:56.902Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 3,
               "Title": "SignalrHub.cs",
               "DocumentMoniker": "C:\\Users\\chuon\\reactjs\\caro-game\\GameServer\\GameServer\\SignalrHub.cs",
               "RelativeDocumentMoniker": "GameServer\\SignalrHub.cs",
