@@ -1,41 +1,46 @@
 "use client";
 import { useState, useEffect } from "react";
 import Image from "next/image";
-import io from "socket.io-client";
 import { CopyToClipboard } from "react-copy-to-clipboard";
+import * as signalR from "@microsoft/signalr";
 
-const socket = io("http://localhost:3001");
+const URL = process.env.NEXT_PUBLIC_HUB_URL ?? "https://localhost:5251/gameHub";
+const connection = new signalR.HubConnectionBuilder().withUrl(URL).build();
 
 const Game = () => {
   const [board, setBoard] = useState<Array<string | null>>(
     Array(100).fill(null)
   ); // 10x10 board
-
   const [isXNext, setIsXNext] = useState(true);
   const [gameNumber, setGameNumber] = useState("");
-  const [currentGame, setCurrentGame] = useState(null);
+  const [currentGame, setCurrentGame] = useState<string | null>(null);
   const [status, setStatus] = useState("");
   const [mySymbol, setMySymbol] = useState("");
   const [hasStarted, setHasStarted] = useState(false);
+  const [error, setError] = useState<string>(""); // State for error message
 
   useEffect(() => {
-    let statusTimer: NodeJS.Timeout | undefined; // Định nghĩa kiểu cho statusTimer
+    let statusTimer: NodeJS.Timeout | undefined;
 
     if (status) {
       statusTimer = setTimeout(() => {
         setStatus("");
-      }, 5000); // 5000 milliseconds = 5 seconds
+      }, 5000);
     }
 
     return () => {
       if (statusTimer) {
-        clearTimeout(statusTimer); // Clear the timer on cleanup
+        clearTimeout(statusTimer);
       }
     };
   }, [status]);
 
   useEffect(() => {
-    socket.on("move", ({ gameNumber, index, symbol }) => {
+    connection
+      .start()
+      .catch((err) => console.error("SignalR Connection Error:", err));
+
+    connection.on("move", ({ gameNumber, index, symbol }) => {
       setBoard((prevBoard) => {
         const newBoard = [...prevBoard];
         newBoard[index] = symbol;
@@ -44,36 +49,38 @@ const Game = () => {
       });
     });
 
-    socket.on("gameCreated", ({ gameNumber }) => {
+    connection.on("gameCreated", ({ gameNumber }) => {
       setCurrentGame(gameNumber);
+
       setStatus(`Game created. Your game number is ${gameNumber}`);
     });
 
-    socket.on("gameJoined", ({ gameNumber }) => {
+    connection.on("gameJoined", ({ gameNumber }) => {
       setCurrentGame(gameNumber);
+
       setStatus(`Joined game ${gameNumber}`);
     });
 
-    socket.on("userJoined", ({ userId }) => {
+    connection.on("userJoined", ({ userId }) => {
       setHasStarted(true);
       setStatus(`User ${userId} joined the game`);
     });
 
-    socket.on("resetGame", () => {
+    connection.on("resetGame", () => {
       reset(false);
     });
 
-    socket.on("error", (error) => {
+    connection.on("error", (error) => {
       setStatus(`Error: ${error}`);
     });
 
     return () => {
-      socket.off("move");
-      socket.off("gameCreated");
-      socket.off("gameJoined");
-      socket.off("userJoined");
-      socket.off("resetGame");
-      socket.off("error");
+      connection.off("move");
+      connection.off("gameCreated");
+      connection.off("gameJoined");
+      connection.off("userJoined");
+      connection.off("resetGame");
+      connection.off("error");
     };
   }, []);
 
@@ -87,35 +94,66 @@ const Game = () => {
       return;
     }
     if (board[index] || calculateWinner(board)) return;
-    if (isXNext && mySymbol != "X") {
+    if (isXNext && mySymbol !== "X") {
       setStatus("Please wait for opponent's move");
       return;
     }
-    if (isXNext == false && mySymbol == "X") {
+    if (!isXNext && mySymbol === "X") {
       setStatus("Please wait for opponent's move");
       return;
     }
     const symbol = isXNext ? "X" : "O";
-    socket.emit("move", { gameNumber: currentGame, index, symbol });
+
+    connection.invoke("move", currentGame, index, symbol).catch((err) => {
+      console.error("Failed to invoke 'Move': ", err);
+      setStatus("Error: Failed to make move.");
+    });
+  };
+
+  const handleMove = (index: number) => {
+    if (!currentGame) {
+      setStatus("Create or join a game first!");
+      return;
+    }
+    if (!hasStarted) {
+      setStatus("Please wait for opponent to join");
+      return;
+    }
+    if (board[index] || calculateWinner(board)) return;
+
+    const symbol = isXNext ? "X" : "O";
+    connection.invoke("move", currentGame, index, symbol).catch((err) => {
+      console.error("Failed to invoke 'Move': ", err);
+      setStatus("Error: Failed to make move.");
+    });
   };
 
   const reset = (isUserInitiated = true) => {
     setBoard(Array(100).fill(null));
     setIsXNext(true);
-    if (isUserInitiated) {
-      socket.emit("resetGame", currentGame);
+    if (isUserInitiated && currentGame) {
+      connection.invoke("resetGame", currentGame).catch((err) => {
+        console.error("Game reset failed:", err);
+        setError("Failed to reset game. Please try again.");
+      });
     }
   };
 
   const handleCreateGame = () => {
     setMySymbol("X");
-    socket.emit("createGame");
+    connection.invoke("createGame").catch((err) => {
+      console.error("Game creation failed:", err);
+      setError("Failed to create game. Please try again.");
+    });
   };
 
   const handleJoinGame = () => {
     if (!gameNumber) return;
     setMySymbol("O");
-    socket.emit("joinGame", gameNumber);
+    connection.invoke("joinGame", gameNumber).catch((err) => {
+      console.error("Join game failed:", err);
+      setError("Failed to join game. Please check the game number.");
+    });
   };
 
   const winner = calculateWinner(board);
@@ -127,7 +165,7 @@ const Game = () => {
     : `Next player: ${isXNext ? "X" : "O"}`;
 
   return (
-    <div className="p-4 bg-gray-100 min-h-screen flex flex-col items-center">
+    <div className="p-4 bg-gray-100 min-h-screen flex flex-col items-center  bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500 ">
       <div className="mb-6 text-center">
         {!currentGame && (
           <div>
@@ -178,6 +216,11 @@ const Game = () => {
           <div className="mt-2 text-lg text-gray-700">{`You are ${mySymbol}`}</div>
         )}
         {status && <div className="mt-2 text-red-500">{status}</div>}
+        {error && (
+          <div className="mt-4 p-2 text-white bg-red-500 rounded-md">
+            {error}
+          </div>
+        )}
       </div>
       <div className="grid grid-cols-10 gap-2">
         {board.map((cell, index) => (
@@ -204,11 +247,11 @@ const Game = () => {
 };
 
 const calculateWinner = (board: (string | null)[]): string | null => {
-  const size = 10; // Kích thước bàn cờ 10x10
-  const winLength = 5; // Cần 5 quân liên tiếp để thắng
+  const size = 10;
+  const winLength = 5;
   const lines = [];
 
-  // Kiểm tra các hàng
+  // Check rows, columns, and diagonals
   for (let row = 0; row < size; row++) {
     for (let col = 0; col <= size - winLength; col++) {
       lines.push(
@@ -217,7 +260,6 @@ const calculateWinner = (board: (string | null)[]): string | null => {
     }
   }
 
-  // Kiểm tra các cột
   for (let col = 0; col < size; col++) {
     for (let row = 0; row <= size - winLength; row++) {
       lines.push(
@@ -226,7 +268,6 @@ const calculateWinner = (board: (string | null)[]): string | null => {
     }
   }
 
-  // Kiểm tra các đường chéo (diagonal từ trái lên phải)
   for (let row = 0; row <= size - winLength; row++) {
     for (let col = 0; col <= size - winLength; col++) {
       lines.push(
@@ -235,7 +276,6 @@ const calculateWinner = (board: (string | null)[]): string | null => {
     }
   }
 
-  // Kiểm tra các đường chéo (diagonal từ phải lên trái)
   for (let row = 0; row <= size - winLength; row++) {
     for (let col = winLength - 1; col < size; col++) {
       lines.push(
@@ -244,16 +284,16 @@ const calculateWinner = (board: (string | null)[]): string | null => {
     }
   }
 
-  // Kiểm tra từng dòng có 5 quân liên tiếp không
+  // Check lines for winner
   for (let i = 0; i < lines.length; i++) {
     const line = lines[i];
     const [a, b, c, d, e] = line.map((index) => board[index]);
     if (a && a === b && a === c && a === d && a === e) {
-      return a; // Trả về "X" hoặc "O" nếu có người thắng
+      return a;
     }
   }
 
-  return null; // Nếu không có ai thắng, trả về null
+  return null;
 };
 
 export default Game;

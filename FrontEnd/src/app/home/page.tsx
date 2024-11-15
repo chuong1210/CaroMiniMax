@@ -1,100 +1,33 @@
 "use client";
-import { useEffect, useState } from "react";
-import { io, Socket } from "socket.io-client";
-
-interface User {
-  id: string;
-  name: string;
-}
-
-interface Message {
-  sender: User;
-  content: string;
-}
+import Link from "next/link";
 
 const Home = () => {
-  const [socket, setSocket] = useState<Socket | null>(null);
-  const [messages, setMessages] = useState<Message[]>([]);
-  const [username, setUsername] = useState("");
-  const [userId, setUserId] = useState("");
-
-  useEffect(() => {
-    const initSocket = async () => {
-      try {
-        const response = await fetch("/api/socket2");
-        if (!response.ok) {
-          console.error("Failed to connect to socket");
-          return;
-        }
-        const newSocket = io("/api/socket");
-        setSocket(newSocket);
-
-        newSocket.on("connect", () => {
-          console.log("Connected");
-
-          // Generate a unique ID for the user (replace with a better method)
-          const uniqueId = crypto.randomUUID();
-          setUserId(uniqueId);
-          // Send the user data to the server
-          newSocket.emit("join", { id: uniqueId, name: username });
-        });
-
-        //Handle messages from other clients
-        newSocket.on("message", (message) => {
-          setMessages((prevMessages) => [...prevMessages, message]);
-        });
-
-        // Handle user joining events
-        newSocket.on("userJoined", (user) => {
-          console.log(`${user.name} joined`);
-        });
-
-        // Handle user leaving events
-        newSocket.on("userLeft", (user) => {
-          console.log(`${user.name} left`);
-        });
-
-        return () => newSocket.disconnect();
-      } catch (error) {
-        console.error("Error initializing socket:", error);
-      }
-    };
-
-    initSocket();
-  }, [username]);
-
-  const sendMessage = (message: string) => {
-    if (socket) {
-      console.log(userId);
-      socket.emit("message", {
-        from: userId,
-        to: "otherUserId",
-        content: message,
-      }); // Use userId and 'otherUserId'
-    }
-  };
-
-  // ... Rest of your component code (input field, display messages)
-
   return (
-    <div>
-      {/* Input and send message */}
-      <input
-        type="text"
-        value={username}
-        onChange={(e) => setUsername(e.target.value)}
-      />
-      <button onClick={() => sendMessage("hello")}>Send</button>
-      {/* Display messages */}
-      <ul>
-        {messages.map((msg, index) => (
-          <li key={index}>
-            <p>
-              {msg.sender.name}: {msg.content}1
-            </p>
-          </li>
-        ))}
-      </ul>
+    <div className="h-screen bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500 flex justify-center items-center">
+      <div className="text-center p-6 bg-white rounded-lg shadow-lg max-w-lg w-full">
+        <h1 className="text-4xl font-extrabold text-gray-800 mb-6">
+          Welcome to the Caro Game!
+        </h1>
+        <p className="text-lg text-gray-600 mb-8">
+          Choose your opponent and start playing!
+        </p>
+
+        <div className="space-y-6">
+          {/* Button to play with user */}
+          <Link href="/play/user">
+            <button className="w-full py-3 px-6 bg-blue-600 text-white font-bold rounded-md text-lg hover:bg-blue-700 transition duration-300 transform hover:scale-105">
+              Play with Another Player
+            </button>
+          </Link>
+
+          {/* Button to play with AI */}
+          <Link href="/play/ai">
+            <button className="w-full py-3 px-6 bg-green-600 text-white font-bold rounded-md text-lg hover:bg-green-700 transition duration-300 transform hover:scale-105">
+              Play with AI
+            </button>
+          </Link>
+        </div>
+      </div>
     </div>
   );
 };
