@@ -1,35 +1,31 @@
 "use client";
+
+import CircularCountdown from "@/Components/CircularCountdown";
 import MiniMax from "@/libary/MiniMax";
 import { useState, useEffect } from "react";
-const {
-  minimax,
-  getEmptyCells,
-  evaluateBoard,
-  getWinningLines,
-  calculateWinner,
-} = MiniMax;
 
-const AI_DEPTH = 3; // Độ sâu của Minimax
-const TIMEOUT = 3000; // 3s cho người chơi
+const { minimax, calculateWinner } = MiniMax;
+
+const AI_DEPTH = 3;
+const TIMEOUT = 3000;
 
 const GameWithAI = () => {
   const [board, setBoard] = useState<Array<string | null>>(
     Array(100).fill(null)
-  ); // 10x10 board
+  );
   const [isXNext, setIsXNext] = useState(true);
   const [status, setStatus] = useState("");
-  const [timer, setTimer] = useState(TIMEOUT / 1000); // Thời gian đếm ngược
+  const [timer, setTimer] = useState(TIMEOUT / 1000);
   const [isGameOver, setIsGameOver] = useState(false);
 
   const handleClick = (index: number) => {
     if (board[index] || calculateWinner(board)) return;
 
-    // Người chơi di chuyển
     const newBoard = [...board];
     newBoard[index] = "X";
     setBoard(newBoard);
     setIsXNext(false);
-    setTimer(TIMEOUT / 1000); // Reset timer mỗi khi người chơi đánh
+    setTimer(TIMEOUT / 1000);
     handleAI();
   };
 
@@ -40,8 +36,7 @@ const GameWithAI = () => {
     setStatus("");
     setIsGameOver(false);
   };
-  // AI thực hiện nước đi
-  // AI thực hiện nước đi ngay khi người chơi đánh xong
+
   useEffect(() => {
     if (!isXNext && !calculateWinner(board)) {
       const { move } = minimax(
@@ -54,18 +49,18 @@ const GameWithAI = () => {
         newBoard[move[0] * 10 + move[1]] = "O";
         setBoard(newBoard);
         setIsXNext(true);
-        setTimer(TIMEOUT / 1000); // Reset timer khi AI thực hiện xong
+        setTimer(TIMEOUT / 1000);
       }
     }
   }, [isXNext, board]);
+
   useEffect(() => {
     if (isXNext && !calculateWinner(board) && !isGameOver) {
       const interval = setInterval(() => {
         setTimer((prev) => {
           if (prev <= 1) {
             clearInterval(interval);
-            // Thực hiện lượt của AI khi hết thời gian
-            setIsXNext(false); // AI đến lượt
+            setIsXNext(false);
             return 0;
           }
           return prev - 1;
@@ -73,9 +68,8 @@ const GameWithAI = () => {
       }, 1000);
       return () => clearInterval(interval);
     }
-  }, [isXNext, board]);
+  }, [isXNext, board, isGameOver]);
 
-  // AI thực hiện nước đi
   const handleAI = () => {
     if (!isXNext && !calculateWinner(board)) {
       const { move } = minimax(
@@ -88,10 +82,11 @@ const GameWithAI = () => {
         newBoard[move[0] * 10 + move[1]] = "O";
         setBoard(newBoard);
         setIsXNext(true);
-        setTimer(TIMEOUT / 1000); // Reset timer khi AI thực hiện xong
+        setTimer(TIMEOUT / 1000);
       }
     }
   };
+
   const winner = calculateWinner(board);
   const isBoardFull = board.every((cell) => cell !== null);
   const gameStatus = winner
@@ -100,12 +95,16 @@ const GameWithAI = () => {
     ? "Tie Match"
     : `Next player: ${isXNext ? "X" : "O"}`;
 
+  useEffect(() => {
+    setStatus(gameStatus);
+  }, [gameStatus]);
+
   return (
     <div className="p-4 bg-gray-100 min-h-screen flex flex-col items-center bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500">
       <div className="mb-6 text-center">
-        <div className="mt-2 text-lg text-gray-700">{gameStatus}</div>
-        <div className="mt-4 text-lg text-white">
-          Time left: <span className="font-bold">{timer}s</span>
+        <div className="mt-2 text-lg text-gray-700">{status}</div>
+        <div className="mt-4 flex justify-center items-center">
+          <CircularCountdown timeLeft={timer} maxTime={TIMEOUT / 1000} />
         </div>
         <button
           type="button"
@@ -116,8 +115,7 @@ const GameWithAI = () => {
         </button>
       </div>
 
-      {/* Board */}
-      <div className="grid grid-cols-10 gap-2">
+      <div className="grid grid-cols-10 gap-2  p-4 rounded-lg shadow-lg">
         {board.map((cell, index) => (
           <button
             key={index}

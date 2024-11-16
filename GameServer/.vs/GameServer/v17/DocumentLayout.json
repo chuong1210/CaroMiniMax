@@ -96,7 +96,7 @@
               "RelativeDocumentMoniker": "GameServer\\GameHub.cs",
               "ToolTip": "C:\\Users\\chuon\\reactjs\\caro-game\\GameServer\\GameServer\\GameHub.cs",
               "RelativeToolTip": "GameServer\\GameHub.cs",
-              "ViewState": "AgIAAIcAAAAAAAAAAAAowAcAAAAqAAAAAAAAAA==",
+              "ViewState": "AgIAAJ0AAAAAAAAAAAAiwK4AAAAyAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-11-15T06:23:44.738Z",
               "EditorCaption": ""
@@ -159,7 +159,8 @@
               "RelativeToolTip": "GameServer\\SignalrHub.cs",
               "ViewState": "AgIAADsAAAAAAAAAAAAuwDMAAAAMAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-11-14T17:45:25.456Z"
+              "WhenOpened": "2024-11-14T17:45:25.456Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",

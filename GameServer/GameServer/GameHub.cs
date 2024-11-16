@@ -156,6 +156,34 @@ public class GameHub : Hub
 
         await Clients.All.SendAsync("resetGame");
     }
+    public async Task Timeout(string gameNumber, string symbol)
+    {
+        if (!games.ContainsKey(gameNumber))
+        {
+            await Clients.Caller.SendAsync("error", "Game not found!");
+            return;
+        }
+
+        var game = games[gameNumber];
+
+        // Kiểm tra xem đó có phải lượt của người chơi hết thời gian không
+        if ((game.IsXNext && symbol == "X") || (!game.IsXNext && symbol == "O"))
+        {
+            // Chuyển lượt sang đối thủ
+            game.IsXNext = !game.IsXNext;
+
+            // Gửi thông báo tới tất cả các client
+            await Clients.All.SendAsync("timeout", new
+            {
+                gameNumber,
+                currentSymbol = game.IsXNext ? "X" : "O",
+                message = $"Player {symbol} ran out of time!"
+            });
+        }
+    }
+
+
+
 
     // Lớp đại diện cho trạng thái của một game
 
