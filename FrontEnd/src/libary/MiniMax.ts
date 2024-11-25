@@ -169,4 +169,10 @@ const minimax = (
     return false;
   };
   
-export default { minimax, getEmptyCells, evaluateBoard, getWinningLines ,calculateWinner};
+export default { 
+  minimax, 
+  getEmptyCells, 
+  evaluateBoard, 
+  getWinningLines,
+  calculateWinner 
+};
