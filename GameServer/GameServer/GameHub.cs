@@ -131,6 +131,8 @@ public class GameHub : Hub
         }
 
         var game = games[gameNumber];
+        game.HasStarted = true; // Đánh dấu game đã bắt đầu
+
         await Clients.Caller.SendAsync("gameJoined", new { gameNumber });
         await Clients.All.SendAsync("userJoined", new { userId = Context.ConnectionId });
     }
@@ -156,6 +158,34 @@ public class GameHub : Hub
 
         await Clients.All.SendAsync("resetGame");
     }
+
+    // Tìm trận đang chờ
+    public async Task FindGame()
+    {
+        string waitingGameNumber = null;
+
+        // Tìm kiếm game chưa đủ người chơi
+        foreach (var gameEntry in games)
+        {
+            var game = gameEntry.Value;
+            if (!game.HasStarted)
+            {
+                waitingGameNumber = gameEntry.Key;
+                break;
+            }
+        }
+
+        // Nếu tìm thấy trận chờ, tham gia vào trận đó
+        if (waitingGameNumber != null)
+        {
+            await JoinGame(waitingGameNumber);
+            return;
+        }
+
+        // Nếu không tìm thấy trận, tạo một trận mới
+        await CreateGame();
+    }
+
     public async Task Timeout(string gameNumber, string symbol)
     {
         if (!games.ContainsKey(gameNumber))

@@ -2,9 +2,8 @@
 
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { useState } from "react";
 import { Roboto, Montserrat } from "next/font/google";
-
+// font chữ
 const roboto = Roboto({
   weight: ["400", "700"],
   subsets: ["vietnamese"],
@@ -16,7 +15,7 @@ const montserrat = Montserrat({
   subsets: ["vietnamese"],
   display: "swap",
 });
-
+// hiệu ứng bằng motion liabry
 const FloatingShape = ({ className }: { className: string }) => (
   <motion.div
     className={`absolute rounded-full mix-blend-multiply filter blur-xl opacity-70 ${className}`}
@@ -34,7 +33,7 @@ const FloatingShape = ({ className }: { className: string }) => (
     }}
   />
 );
-
+// button jsx
 const ButtonLink = ({
   href,
   children,
@@ -57,9 +56,8 @@ const ButtonLink = ({
   </Link>
 );
 
+// home page
 const Home = () => {
-  const [isHovered, setIsHovered] = useState(false);
-
   return (
     <div
       className={`min-h-screen bg-gradient-to-br from-gray-900 to-gray-800 flex flex-col justify-between relative overflow-hidden ${roboto.className}`}
@@ -75,41 +73,8 @@ const Home = () => {
           transition={{ duration: 0.5 }}
           className="text-white text-2xl font-bold"
         >
-          Caro Game
+          Caro Game (10x10)
         </motion.div>
-        <nav>
-          <motion.ul
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-            className="flex space-x-4"
-          >
-            <li>
-              <a
-                href="#"
-                className="text-white hover:text-indigo-300 transition"
-              >
-                About
-              </a>
-            </li>
-            <li>
-              <a
-                href="#"
-                className="text-white hover:text-indigo-300 transition"
-              >
-                Rules
-              </a>
-            </li>
-            <li>
-              <a
-                href="#"
-                className="text-white hover:text-indigo-300 transition"
-              >
-                Contact
-              </a>
-            </li>
-          </motion.ul>
-        </nav>
       </header>
 
       <main className="flex-grow flex justify-center items-center px-4 py-12">
@@ -149,31 +114,6 @@ const Home = () => {
             <ButtonLink href="/play/ai">
               <span className="relative z-10">Chơi với AI</span>
             </ButtonLink>
-          </motion.div>
-
-          <motion.div
-            className="mt-12 relative"
-            onMouseEnter={() => setIsHovered(true)}
-            onMouseLeave={() => setIsHovered(false)}
-          >
-            <motion.div
-              className="text-indigo-300 text-sm"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: isHovered ? 1 : 0 }}
-              transition={{ duration: 0.3 }}
-            >
-              Hover to see game stats
-            </motion.div>
-            <motion.div
-              className="absolute top-full left-0 right-0 bg-white bg-opacity-20 backdrop-filter backdrop-blur-lg rounded-lg p-4 mt-2"
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: isHovered ? 1 : 0, y: isHovered ? 0 : 10 }}
-              transition={{ duration: 0.3 }}
-            >
-              <p className="text-white">Games Played: 1,234</p>
-              <p className="text-white">Active Players: 567</p>
-              <p className="text-white">Highest Score: 9,876</p>
-            </motion.div>
           </motion.div>
         </motion.div>
       </main>

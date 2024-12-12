@@ -6,7 +6,7 @@ import { CopyToClipboard } from "react-copy-to-clipboard";
 import * as signalR from "@microsoft/signalr";
 import CircularCountdown from "@/Components/CircularCountdown";
 
-const URL = process.env.NEXT_PUBLIC_HUB_URL ?? "https://localhost:5251/gameHub";
+const URL = "https://localhost:5251/gameHub";
 const connection = new signalR.HubConnectionBuilder().withUrl(URL).build();
 
 const TURN_TIME = 5; // 30 seconds per turn
@@ -187,6 +187,15 @@ const Game = () => {
     : isBoardFull
     ? "Tie Match"
     : `Next player: ${isXNext ? "X" : "O"}`;
+
+  const handleFindGame = () => {
+    setMySymbol("O");
+    connection.invoke("findGame").catch((err) => {
+      console.error("Find game failed:", err);
+      setError("Failed to find or create game. Please try again.");
+    });
+  };
+
   return (
     <div className="p-4 min-h-screen bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500">
       <div className="max-w-7xl mx-auto flex flex-col md:flex-row gap-8">
@@ -236,6 +245,12 @@ const Game = () => {
                   className="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 transition-colors"
                 >
                   Join Game
+                </button>
+                <button
+                  onClick={handleFindGame}
+                  className="w-full mt-4 px-4 py-2 bg-purple-500 text-white rounded-md hover:bg-purple-600 transition-colors"
+                >
+                  Find Game
                 </button>
               </div>
             </div>
@@ -298,7 +313,6 @@ const calculateWinner = (board: (string | null)[]): string | null => {
   const winLength = 5;
   const lines = [];
 
-  // Check rows, columns, and diagonals
   for (let row = 0; row < size; row++) {
     for (let col = 0; col <= size - winLength; col++) {
       lines.push(
@@ -331,7 +345,6 @@ const calculateWinner = (board: (string | null)[]): string | null => {
     }
   }
 
-  // Check lines for winner
   for (let i = 0; i < lines.length; i++) {
     const line = lines[i];
     const [a, b, c, d, e] = line.map((index) => board[index]);
