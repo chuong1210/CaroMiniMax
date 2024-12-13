@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "T3jUemfC2jc=",
+  "dgSpecHash": "4K6Tu94SPE8=",
   "success": true,
-  "projectFilePath": "C:\\Users\\chuon\\reactjs\\caro-game\\GameServer\\GameServer\\GameServer.csproj",
+  "projectFilePath": "C:\\Users\\chuon\\Desktop\\NC07\\NC07_caro-game\\GameServer\\GameServer\\GameServer.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\chuon\\.nuget\\packages\\microsoft.aspnetcore.authentication.abstractions\\2.2.0\\microsoft.aspnetcore.authentication.abstractions.2.2.0.nupkg.sha512",
     "C:\\Users\\chuon\\.nuget\\packages\\microsoft.aspnetcore.authorization\\2.2.0\\microsoft.aspnetcore.authorization.2.2.0.nupkg.sha512",

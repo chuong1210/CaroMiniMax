@@ -152,6 +152,17 @@ const Game = () => {
     });
   };
 
+  // const reset = (isUserInitiated = true) => {
+  //   setBoard(Array(100).fill(null));
+  //   setIsXNext(true);
+  //   setTimer(TURN_TIME);
+  //   if (isUserInitiated && currentGame) {
+  //     connection.invoke("resetGame", currentGame).catch((err) => {
+  //       console.error("Game reset failed:", err);
+  //       setError("Failed to reset game. Please try again.");
+  //     });
+  //   }
+  // };
   const reset = (isUserInitiated = true) => {
     setBoard(Array(100).fill(null));
     setIsXNext(true);
@@ -161,6 +172,9 @@ const Game = () => {
         console.error("Game reset failed:", err);
         setError("Failed to reset game. Please try again.");
       });
+    } else {
+      // Đảo vai trò người chơi khi reset mà không phải do người dùng yêu cầu
+      setMySymbol((prevSymbol) => (prevSymbol === "X" ? "O" : "X"));
     }
   };
 
@@ -190,6 +204,7 @@ const Game = () => {
 
   const handleFindGame = () => {
     setMySymbol("O");
+
     connection.invoke("findGame").catch((err) => {
       console.error("Find game failed:", err);
       setError("Failed to find or create game. Please try again.");
@@ -199,7 +214,6 @@ const Game = () => {
   return (
     <div className="p-4 min-h-screen bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500">
       <div className="max-w-7xl mx-auto flex flex-col md:flex-row gap-8">
-        {/* Left column: Game board */}
         <div className="md:w-1/2 ml-20">
           <div className="grid grid-cols-10 gap-2  p-4 rounded-lg shadow-lg">
             {board.map((cell, index) => (
@@ -222,7 +236,6 @@ const Game = () => {
           </div>
         </div>
 
-        {/* Right column: Game info and controls */}
         <div className="md:w-1/3 space-y-6 ">
           {!currentGame ? (
             <div className="bg-white p-4 rounded-lg shadow-lg">
@@ -238,20 +251,22 @@ const Game = () => {
                   value={gameNumber}
                   onChange={(e) => setGameNumber(e.target.value)}
                   placeholder="Enter game number"
-                  className="flex-grow px-2 py-1 border border-gray-300 rounded-md focus:outline-none focus:ring focus:border-blue-300"
+                  className="flex-grow h-[100px] px-2 py-1 border border-gray-300 rounded-md focus:outline-none focus:ring focus:border-blue-300"
                 />
-                <button
-                  onClick={handleJoinGame}
-                  className="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 transition-colors"
-                >
-                  Join Game
-                </button>
-                <button
-                  onClick={handleFindGame}
-                  className="w-full mt-4 px-4 py-2 bg-purple-500 text-white rounded-md hover:bg-purple-600 transition-colors"
-                >
-                  Find Game
-                </button>
+                <div className="flex flex-col items-center gap-4">
+                  <button
+                    onClick={handleJoinGame}
+                    className="w-full max-w-[200px] px-6 py-3 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-all duration-200 shadow-md"
+                  >
+                    Join Game
+                  </button>
+                  <button
+                    onClick={handleFindGame}
+                    className="w-full max-w-[200px] px-6 py-3 bg-purple-500 text-white rounded-lg hover:bg-purple-600 transition-all duration-200 shadow-md"
+                  >
+                    Find Game
+                  </button>
+                </div>
               </div>
             </div>
           ) : (

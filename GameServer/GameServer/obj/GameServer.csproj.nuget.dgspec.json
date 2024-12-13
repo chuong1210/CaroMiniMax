@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\chuon\\reactjs\\caro-game\\GameServer\\GameServer\\GameServer.csproj": {}
+    "C:\\Users\\chuon\\Desktop\\NC07\\NC07_caro-game\\GameServer\\GameServer\\GameServer.csproj": {}
   },
   "projects": {
-    "C:\\Users\\chuon\\reactjs\\caro-game\\GameServer\\GameServer\\GameServer.csproj": {
+    "C:\\Users\\chuon\\Desktop\\NC07\\NC07_caro-game\\GameServer\\GameServer\\GameServer.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\chuon\\reactjs\\caro-game\\GameServer\\GameServer\\GameServer.csproj",
+        "projectUniqueName": "C:\\Users\\chuon\\Desktop\\NC07\\NC07_caro-game\\GameServer\\GameServer\\GameServer.csproj",
         "projectName": "GameServer",
-        "projectPath": "C:\\Users\\chuon\\reactjs\\caro-game\\GameServer\\GameServer\\GameServer.csproj",
+        "projectPath": "C:\\Users\\chuon\\Desktop\\NC07\\NC07_caro-game\\GameServer\\GameServer\\GameServer.csproj",
         "packagesPath": "C:\\Users\\chuon\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\chuon\\reactjs\\caro-game\\GameServer\\GameServer\\obj\\",
+        "outputPath": "C:\\Users\\chuon\\Desktop\\NC07\\NC07_caro-game\\GameServer\\GameServer\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\chuon\\AppData\\Roaming\\NuGet\\NuGet.Config",

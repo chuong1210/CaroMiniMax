@@ -207,9 +207,12 @@ export function makeMove(board: Board, move: Move, player: Player): Board {
   return newBoard;
 }
 
+// export function getBoardState(board: Board): string {
+//   // Chuyển đổi trạng thái bàn cờ thành chuỗi
+//   return board.map(row => row.map(cell => cell || '-').join('')).join('');
+// }
 export function getBoardState(board: Board): string {
-  // Chuyển đổi trạng thái bàn cờ thành chuỗi
-  return board.map(row => row.map(cell => cell || '-').join('')).join('');
+  return board.map(row => row.map(cell => cell || '-').join('')).join('|');
 }
 
 export function getReward(board: Board, player: Player): number {

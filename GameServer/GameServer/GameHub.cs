@@ -144,6 +144,22 @@ public class GameHub : Hub
     }
 
     // Phương thức gọi khi người chơi yêu cầu reset game
+    //public async Task ResetGame(string gameNumber)
+    //{
+    //    if (!games.ContainsKey(gameNumber))
+    //    {
+    //        await Clients.Caller.SendAsync("error", "Game not found!");
+    //        return;
+    //    }
+
+    //    var game = games[gameNumber];
+    //    game.Board = new string[100];
+    //    game.IsXNext = true;
+
+    //    await Clients.All.SendAsync("resetGame");
+    //}
+
+
     public async Task ResetGame(string gameNumber)
     {
         if (!games.ContainsKey(gameNumber))
@@ -153,6 +169,12 @@ public class GameHub : Hub
         }
 
         var game = games[gameNumber];
+
+        // Đổi vai trò người chơi
+        var temp = game.PlayerXConnectionId;
+        game.PlayerXConnectionId = game.PlayerOConnectionId;
+        game.PlayerOConnectionId = temp;
+
         game.Board = new string[100];
         game.IsXNext = true;
 
@@ -183,7 +205,7 @@ public class GameHub : Hub
         }
 
         // Nếu không tìm thấy trận, tạo một trận mới
-        await CreateGame();
+        //await CreateGame();
     }
 
     public async Task Timeout(string gameNumber, string symbol)
@@ -195,6 +217,7 @@ public class GameHub : Hub
         }
 
         var game = games[gameNumber];
+
 
         // Kiểm tra xem đó có phải lượt của người chơi hết thời gian không
         if ((game.IsXNext && symbol == "X") || (!game.IsXNext && symbol == "O"))

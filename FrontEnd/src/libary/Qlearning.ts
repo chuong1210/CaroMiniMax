@@ -10,7 +10,7 @@ export class QLearningAgent {
   private qTable: QTable = {}; // Bảng Q lưu trữ giá trị Q cho mỗi cặp trạng thái-hành động
   private learningRate: number = 0.1; // Tốc độ học: kiểm soát mức độ cập nhật giá trị Q
   private discountFactor: number = 0.9; // Hệ số chiết khấu: xác định tầm quan trọng của phần thưởng trong tương lai
-  private explorationRate: number = 0.1; // Tỷ lệ khám phá: xác suất chọn hành động ngẫu nhiên
+  private explorationRate: number = 0.3; // Tỷ lệ khám phá: xác suất chọn hành động ngẫu nhiên
 
   constructor(qTable?: QTable) {
     if (qTable) {
@@ -67,6 +67,7 @@ export class QLearningAgent {
     const newQ = reward + this.discountFactor * this.getBestQValue(newState);
     const updatedQ = oldQ + this.learningRate * (newQ - oldQ);
     this.setQValue(oldState, action, updatedQ);
+    
   }
 
   private getBestQValue(state: string): number {
@@ -125,6 +126,7 @@ export async function trainAgent(
 
       currentPlayer = currentPlayer === 'X' ? 'O' : 'X'; // Chuyển lượt chơi
     }
+
 
     episodeCount++;
     updateProgress(episodeCount);
